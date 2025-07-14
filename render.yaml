@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: swakriti-api
+    env: python
+    startCommand: python app_2.py
+    plan: free
