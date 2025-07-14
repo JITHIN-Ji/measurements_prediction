@@ -4,6 +4,7 @@ import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.multioutput import MultiOutputRegressor
 import logging
+import joblib  
 import json
 import os
 from datetime import datetime
@@ -18,6 +19,7 @@ app = Flask(__name__)
 model = None
 df = None
 MEASUREMENTS_FILE = 'measurements.json'
+MODEL_FILE        = 'model_compressed.pkl'
 
 def load_data():
     """Load and prepare the data."""
@@ -54,12 +56,22 @@ def train_model(df):
     return model
 
 def initialize_model():
-    """Initialize the model on app startup."""
+    """
+    Load pre‑trained model if present; otherwise train once
+    and save a compressed copy for future runs.
+    """
     global model, df
-    logger.info("Loading data and training model...")
-    df = load_data()
-    model = train_model(df)
-    logger.info("Model initialized successfully!")
+    if os.path.exists(MODEL_FILE):
+        logger.info("Loading pre‑trained model from %s…", MODEL_FILE)
+        model = joblib.load(MODEL_FILE)
+        logger.info("Model loaded successfully!")
+    else:
+        logger.info("Model file not found; training a new model…")
+        df = load_data()
+        model = train_model(df)
+        joblib.dump(model, MODEL_FILE, compress=3)
+        logger.info("Model trained and saved to %s", MODEL_FILE)
+
 
 def load_measurements():
     """Load measurements from JSON file."""
