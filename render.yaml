@@ -1,6 +1,9 @@
 services:
   - type: web
-    name: swakriti-api
-    env: python
-    startCommand: python app_2.py
-    plan: free
+    name: measurement-backend
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.13
