@@ -1,6 +1,21 @@
-Flask==3.1.1
+# Build tools (required for numpy/scikit-learn on Render)
+setuptools>=65.0.0
+wheel
+pip>=24.0
+
+# Web framework
+flask==3.1.1
 gunicorn==21.2.0
-pandas==2.2.2          
-numpy==1.26.4
-scikit-learn==1.5.0
-joblib>=1.1.0
+
+# Core ML/Science libraries
+joblib==1.5.1
+numpy==2.0.2
+scikit-learn==1.6.1
+pandas==2.3.1
+
+# Logging and time
+python-dateutil==2.9.0.post0
+tzdata==2025.2
+
+# Optional but recommended
+Werkzeug==3.1.3
